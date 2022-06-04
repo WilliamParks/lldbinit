@@ -161,8 +161,10 @@ old_x64 = { "rax": 0, "rcx": 0, "rdx": 0, "rbx": 0, "rsp": 0, "rbp": 0, "rsi": 0
             "r8": 0, "r9": 0, "r10": 0, "r11": 0, "r12": 0, "r13": 0, "r14": 0, "r15": 0,
             "rflags": 0, "cs": 0, "fs": 0, "gs": 0 }
 
-old_arm = { "r0": 0, "r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0, "r6": 0, "r7": 0, "r8": 0, "r9": 0, "r10": 0, 
-            "r11": 0, "r12": 0, "sp": 0, "lr": 0, "pc": 0, "cpsr": 0 }
+old_arm = { "x0": 0, "x1": 0, "x2": 0, "x3": 0, "x4": 0, "x5": 0, "x6": 0, "x7": 0, "x8": 0, "x9": 0, "x10": 0, 
+            "x11": 0, "x12": 0, "x13": 0, "x14": 0, "x15": 0, "x16": 0, "x17": 0, "x18": 0, "x19": 0, "x20": 0, 
+            "x21": 0, "x22": 0, "x23": 0, "x24": 0, "x25": 0, "x26": 0, "x27": 0, "x28": 0, "sp": 0, "lr": 0,
+            "pc": 0, "cpsr": 0 }
 
 arm_type = "thumbv7-apple-ios"
 
@@ -3112,45 +3114,51 @@ def dump_cpsr(cpsr):
             output(flag.lower() + " ")
         
 def regarm():
+
+
+    for i in range(0, 29):
+        reg_name = "x" + str(i)
+        color(COLOR_REGNAME)
+        output("  {:3s}:  ".format(reg_name))
+        reg_value = get_gp_register(reg_name)
+        if reg_value == old_arm[reg_name]:
+            color(COLOR_REGVAL)
+        else:
+            color(COLOR_REGVAL_MODIFIED)
+        output("0x%.016X" % (reg_value))
+        old_arm[reg_name] = reg_value
+        if i % 4 == 3:
+            output("\n")
+    
     color(COLOR_REGNAME)
-    output("  R0:  ")
-    r0 = get_gp_register("r0")
-    if r0 == old_arm["r0"]:
+    output("   SP:  ")
+    sp = get_gp_register("sp")
+    if sp == old_arm["sp"]:
         color(COLOR_REGVAL)
     else:
         color(COLOR_REGVAL_MODIFIED)
-    output("0x%.08X" % (r0))
-    old_arm["r0"] = r0
+    output("0x%.016X" % (sp))
+    old_arm["sp"] = sp
 
     color(COLOR_REGNAME)
-    output("  R1:  ")
-    r1 = get_gp_register("r1")
-    if r1 == old_arm["r1"]:
+    output("   LR:  ")
+    lr = get_gp_register("lr")
+    if lr == old_arm["lr"]:
         color(COLOR_REGVAL)
     else:
         color(COLOR_REGVAL_MODIFIED)
-    output("0x%.08X" % (r1))
-    old_arm["r1"] = r1
+    output("0x%.016X" % (lr))
+    old_arm["lr"] = lr
 
     color(COLOR_REGNAME)
-    output("  R2:  ")
-    r2 = get_gp_register("r2")
-    if r2 == old_arm["r2"]:
+    output("   PC:  ")
+    pc = get_gp_register("pc")
+    if pc == old_arm["pc"]:
         color(COLOR_REGVAL)
     else:
         color(COLOR_REGVAL_MODIFIED)
-    output("0x%.08X" % (r2))
-    old_arm["r2"] = r2
-
-    color(COLOR_REGNAME)
-    output("  R3:  ")
-    r3 = get_gp_register("r3")
-    if r3 == old_arm["r3"]:
-        color(COLOR_REGVAL)
-    else:
-        color(COLOR_REGVAL_MODIFIED)
-    output("0x%.08X" % (r3))
-    old_arm["r3"] = r3
+    output("0x%.016X" % (pc))
+    old_arm["pc"] = pc
     
     output(" ")
     color("BOLD")
@@ -3159,133 +3167,8 @@ def regarm():
     cpsr = get_gp_register("cpsr")
     dump_cpsr(cpsr)
     color("RESET")
-
-    output("\n")
-    
-    color(COLOR_REGNAME)
-    output("  R4:  ")
-    r4 = get_gp_register("r4")
-    if r4 == old_arm["r4"]:
-        color(COLOR_REGVAL)
-    else:
-        color(COLOR_REGVAL_MODIFIED)
-    output("0x%.08X" % (r4))
-    old_arm["r4"] = r4
-
-    color(COLOR_REGNAME)
-    output("  R5:  ")
-    r5 = get_gp_register("r5")
-    if r5 == old_arm["r5"]:
-        color(COLOR_REGVAL)
-    else:
-        color(COLOR_REGVAL_MODIFIED)
-    output("0x%.08X" % (r5))
-    old_arm["r5"] = r5
-
-    color(COLOR_REGNAME)
-    output("  R6:  ")
-    r6 = get_gp_register("r6")
-    if r6 == old_arm["r6"]:
-        color(COLOR_REGVAL)
-    else:
-        color(COLOR_REGVAL_MODIFIED)
-    output("0x%.08X" % (r6))
-    old_arm["r6"] = r6
-
-    color(COLOR_REGNAME)
-    output("  R7:  ")
-    r7 = get_gp_register("r7")
-    if r7 == old_arm["r7"]:
-        color(COLOR_REGVAL)
-    else:
-        color(COLOR_REGVAL_MODIFIED)
-    output("0x%.08X" % (r7))
-    old_arm["r7"] = r7
-
     output("\n")
 
-    color(COLOR_REGNAME)
-    output("  R8:  ")
-    r8 = get_gp_register("r8")
-    if r8 == old_arm["r8"]:
-        color(COLOR_REGVAL)
-    else:
-        color(COLOR_REGVAL_MODIFIED)
-    output("0x%.08X" % (r8))
-    old_arm["r8"] = r8
-
-    color(COLOR_REGNAME)
-    output("  R9:  ")
-    r9 = get_gp_register("r9")
-    if r9 == old_arm["r9"]:
-        color(COLOR_REGVAL)
-    else:
-        color(COLOR_REGVAL_MODIFIED)
-    output("0x%.08X" % (r9))
-    old_arm["r9"] = r9
-
-    color(COLOR_REGNAME)
-    output("  R10: ")
-    r10 = get_gp_register("r10")
-    if r10 == old_arm["r10"]:
-        color(COLOR_REGVAL)
-    else:
-        color(COLOR_REGVAL_MODIFIED)
-    output("0x%.08X" % (r10))
-    old_arm["r10"] = r10
-
-    color(COLOR_REGNAME)
-    output("  R11: ")
-    r11 = get_gp_register("r11")
-    if r11 == old_arm["r11"]:
-        color(COLOR_REGVAL)
-    else:
-        color(COLOR_REGVAL_MODIFIED)
-    output("0x%.08X" % (r11))
-    old_arm["r11"] = r11
-    
-    output("\n")
-
-    color(COLOR_REGNAME)
-    output("  R12: ")
-    r12 = get_gp_register("r12")
-    if r12 == old_arm["r12"]:
-        color(COLOR_REGVAL)
-    else:
-        color(COLOR_REGVAL_MODIFIED)
-    output("0x%.08X" % (r12))
-    old_arm["r12"] = r12
-
-    color(COLOR_REGNAME)
-    output("  SP:  ")
-    sp = get_gp_register("sp")
-    if sp == old_arm["sp"]:
-        color(COLOR_REGVAL)
-    else:
-        color(COLOR_REGVAL_MODIFIED)
-    output("0x%.08X" % (sp))
-    old_arm["sp"] = sp
-
-    color(COLOR_REGNAME)
-    output("  LR:  ")
-    lr = get_gp_register("lr")
-    if lr == old_arm["lr"]:
-        color(COLOR_REGVAL)
-    else:
-        color(COLOR_REGVAL_MODIFIED)
-    output("0x%.08X" % (lr))
-    old_arm["lr"] = lr
-
-    color(COLOR_REGNAME)
-    output("  PC:  ")
-    pc = get_gp_register("pc")
-    if pc == old_arm["pc"]:
-        color(COLOR_REGVAL)
-    else:
-        color(COLOR_REGVAL_MODIFIED)
-    output("0x%.08X" % (pc))
-    old_arm["pc"] = pc
-    output("\n")
 
 def print_registers():
     arch = get_arch()

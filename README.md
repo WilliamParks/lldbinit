@@ -5,7 +5,8 @@ A gdbinit clone for LLDB aka how to make LLDB a bit more useful and less crappy
 (c) Deroko 2014, 2015, 2016  
 (c) fG! 2017, 2020 - reverser@put.as - https://reverse.put.as
 
-Available at https://github.com/gdbinit/lldbinit
+Additional modifications by William Parks in 2022, but probably only small ones
+Available at https://github.com/WilliamParks/lldbinit
 
 No original license by Deroko so I guess this is do whatever you want with this
 as long you keep original credits and sources references.
